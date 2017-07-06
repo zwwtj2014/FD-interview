@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="baseapp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Transclude-Base</title>
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./base.css">
+    <script src="../lib/angular.js"></script>
+    <script src="./base.js"></script>
+</head>
+
+<body>
+    <div ng-controller="parentController">
+        <button-bar>
+            <button class="primary" ng-click="onPrimary1Click()">{{primary1Label}}</button>
+            <button class="primary">Primary2</button>
+        </button-bar>
+    </div>
+</body>
+
+</html>
