@@ -33,21 +33,20 @@ baseapp.directive('buttonBar', function () {
         template: '<div class="span4 well clearfix"><div class="primary-block pull-right"></div><div class="secondary-block"></div></div>',
         replace: true,
         transclude: true,
-        compile: function(elem, attrs, transcludeFn) {
-            return function (scope, element, attrs) {
-                transcludeFn(scope, function(clone) {
-                    var primaryBlock = elem.find('div.primary-block');
-                    var secondaryBlock = elem.find('div.secondary-block');
-                    var transcludedButtons = clone.filter(':button');
-                    angular.forEach(transcludedButtons, function(e) {
-                        if (angular.element(e).hasClass('primary')) {
-                            primaryBlock.append(e);
-                        } else if (angular.element(e).hasClass('secondary')) {
-                            secondaryBlock.append(e);
-                        }
-                    });
+        scope: {},
+        controller: ['$scope', '$element', '$transclude', function ($scope, $element, $transclude) {
+            $transclude(function (clone) {
+                var primaryBlock = $element.find('div.primary-block');
+                var secondaryBlock = $element.find('div.secondary-block');
+                var transcludedButtons = clone.filter(':button');
+                angular.forEach(transcludedButtons, function (e) {
+                    if (angular.element(e).hasClass('primary')) {
+                        primaryBlock.append(e);
+                    } else if (angular.element(e).hasClass('secondary')) {
+                        secondaryBlock.append(e);
+                    }
                 });
-            };
-        }
+            });
+        }]
     };
 });
