@@ -30,24 +30,24 @@ baseapp.directive('secondary', function () {
 baseapp.directive('buttonBar', function () {
     return {
         restrict: 'EA',
-        template: '<div class="span4 well clearfix"><div class="primary-block pull-right"></div><div class="secondary-block"></div><div class="transcluded" ng-transclude></div></div>',
+        template: '<div class="span4 well clearfix"><div class="primary-block pull-right"></div><div class="secondary-block"></div></div>',
         replace: true,
         transclude: true,
-        link: function (scope, ele, attrs) {
-            var primaryBlock = ele.find('div.primary-block');
-            var secondaryBlock = ele.find('div.secondary-block');
-            var transcludedBlock = ele.find('div.transcluded');
-            var transcludeButtons = transcludedBlock.children().filter(':button');
-
-            angular.forEach(transcludeButtons,function(btn){
-                if(angular.element(btn).hasClass('primary')){
-                    primaryBlock.append(btn);
-                } else if(angular.element(btn).hasClass('secondary')){
-                    secondaryBlock.append(btn);
-                }
-            });
-
-            transcludedBlock.remove();
+        compile: function(elem, attrs, transcludeFn) {
+            return function (scope, element, attrs) {
+                transcludeFn(scope, function(clone) {
+                    var primaryBlock = elem.find('div.primary-block');
+                    var secondaryBlock = elem.find('div.secondary-block');
+                    var transcludedButtons = clone.filter(':button');
+                    angular.forEach(transcludedButtons, function(e) {
+                        if (angular.element(e).hasClass('primary')) {
+                            primaryBlock.append(e);
+                        } else if (angular.element(e).hasClass('secondary')) {
+                            secondaryBlock.append(e);
+                        }
+                    });
+                });
+            };
         }
     };
 });
