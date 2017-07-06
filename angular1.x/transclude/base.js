@@ -18,11 +18,36 @@ baseapp.directive('primary', function () {
     };
 });
 
+baseapp.directive('secondary', function () {
+    return {
+        restrict: 'C',
+        link: function (scope, ele, attr) {
+            ele.addClass('btn');
+        }
+    };
+});
+
 baseapp.directive('buttonBar', function () {
     return {
         restrict: 'EA',
-        template: '<div class="span4 well clearfix"><div class="pull-right" ng-transclude></div></div>',
+        template: '<div class="span4 well clearfix"><div class="primary-block pull-right"></div><div class="secondary-block"></div><div class="transcluded" ng-transclude></div></div>',
         replace: true,
-        transclude: true
+        transclude: true,
+        link: function (scope, ele, attrs) {
+            var primaryBlock = ele.find('div.primary-block');
+            var secondaryBlock = ele.find('div.secondary-block');
+            var transcludedBlock = ele.find('div.transcluded');
+            var transcludeButtons = transcludedBlock.children().filter(':button');
+
+            angular.forEach(transcludeButtons,function(btn){
+                if(angular.element(btn).hasClass('primary')){
+                    primaryBlock.append(btn);
+                } else if(angular.element(btn).hasClass('secondary')){
+                    secondaryBlock.append(btn);
+                }
+            });
+
+            transcludedBlock.remove();
+        }
     };
 });
